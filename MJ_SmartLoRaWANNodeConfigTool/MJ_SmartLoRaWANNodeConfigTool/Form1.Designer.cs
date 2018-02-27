@@ -30,6 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.device = new System.Windows.Forms.GroupBox();
+            this.disconnect = new System.Windows.Forms.Button();
+            this.reset = new System.Windows.Forms.Button();
+            this.comboxactivatymethod = new System.Windows.Forms.ComboBox();
             this.factoryreset = new System.Windows.Forms.Button();
             this.texfirewareversion = new System.Windows.Forms.TextBox();
             this.connect = new System.Windows.Forms.Button();
@@ -37,7 +40,6 @@
             this.GlobaleParameter = new System.Windows.Forms.GroupBox();
             this.texboxtimer = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboxactivatymethod = new System.Windows.Forms.ComboBox();
             this.texboxendchannel = new System.Windows.Forms.TextBox();
             this.endchannel = new System.Windows.Forms.Label();
             this.nodetype = new System.Windows.Forms.Label();
@@ -76,8 +78,7 @@
             this.checkboxconfirm = new System.Windows.Forms.CheckBox();
             this.senddata = new System.Windows.Forms.Button();
             this.serialPort = new System.IO.Ports.SerialPort(this.components);
-            this.reset = new System.Windows.Forms.Button();
-            this.disconnect = new System.Windows.Forms.Button();
+            this.buttonactivat = new System.Windows.Forms.Button();
             this.device.SuspendLayout();
             this.GlobaleParameter.SuspendLayout();
             this.otaaactivaty.SuspendLayout();
@@ -87,6 +88,7 @@
             // 
             // device
             // 
+            this.device.Controls.Add(this.buttonactivat);
             this.device.Controls.Add(this.disconnect);
             this.device.Controls.Add(this.reset);
             this.device.Controls.Add(this.comboxactivatymethod);
@@ -100,6 +102,42 @@
             this.device.TabIndex = 0;
             this.device.TabStop = false;
             this.device.Text = "连接设备";
+            // 
+            // disconnect
+            // 
+            this.disconnect.Location = new System.Drawing.Point(247, 17);
+            this.disconnect.Name = "disconnect";
+            this.disconnect.Size = new System.Drawing.Size(132, 23);
+            this.disconnect.TabIndex = 6;
+            this.disconnect.Text = "断开连接";
+            this.disconnect.UseVisualStyleBackColor = true;
+            this.disconnect.MouseClick += new System.Windows.Forms.MouseEventHandler(this.disconnect_MouseClick);
+            // 
+            // reset
+            // 
+            this.reset.Location = new System.Drawing.Point(247, 73);
+            this.reset.Name = "reset";
+            this.reset.Size = new System.Drawing.Size(132, 23);
+            this.reset.TabIndex = 5;
+            this.reset.Text = "复位设备";
+            this.reset.UseVisualStyleBackColor = true;
+            this.reset.MouseClick += new System.Windows.Forms.MouseEventHandler(this.reset_MouseClick);
+            // 
+            // comboxactivatymethod
+            // 
+            this.comboxactivatymethod.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboxactivatymethod.FormattingEnabled = true;
+            this.comboxactivatymethod.Items.AddRange(new object[] {
+            "-激活方式-",
+            "OTAA",
+            "ABP"});
+            this.comboxactivatymethod.Location = new System.Drawing.Point(6, 75);
+            this.comboxactivatymethod.Name = "comboxactivatymethod";
+            this.comboxactivatymethod.Size = new System.Drawing.Size(92, 20);
+            this.comboxactivatymethod.TabIndex = 7;
+            this.comboxactivatymethod.SelectedIndexChanged += new System.EventHandler(this.comboxactivatymethod_SelectedIndexChanged);
+            this.comboxactivatymethod.SelectionChangeCommitted += new System.EventHandler(this.comboxactivatymethod_SelectionChangeCommitted);
             // 
             // factoryreset
             // 
@@ -121,7 +159,7 @@
             this.texfirewareversion.Enabled = false;
             this.texfirewareversion.Location = new System.Drawing.Point(6, 46);
             this.texfirewareversion.Name = "texfirewareversion";
-            this.texfirewareversion.Size = new System.Drawing.Size(373, 21);
+            this.texfirewareversion.Size = new System.Drawing.Size(222, 21);
             this.texfirewareversion.TabIndex = 3;
             this.texfirewareversion.Text = "设备未连接";
             this.texfirewareversion.TextChanged += new System.EventHandler(this.texfirewareversion_TextChanged);
@@ -188,22 +226,6 @@
             this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 8;
             this.label4.Text = "唤醒周期";
-            // 
-            // comboxactivatymethod
-            // 
-            this.comboxactivatymethod.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboxactivatymethod.FormattingEnabled = true;
-            this.comboxactivatymethod.Items.AddRange(new object[] {
-            "-激活方式-",
-            "OTAA",
-            "ABP"});
-            this.comboxactivatymethod.Location = new System.Drawing.Point(6, 75);
-            this.comboxactivatymethod.Name = "comboxactivatymethod";
-            this.comboxactivatymethod.Size = new System.Drawing.Size(92, 20);
-            this.comboxactivatymethod.TabIndex = 7;
-            this.comboxactivatymethod.SelectedIndexChanged += new System.EventHandler(this.comboxactivatymethod_SelectedIndexChanged);
-            this.comboxactivatymethod.SelectionChangeCommitted += new System.EventHandler(this.comboxactivatymethod_SelectionChangeCommitted);
             // 
             // texboxendchannel
             // 
@@ -610,25 +632,15 @@
             // 
             this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
             // 
-            // reset
+            // buttonactivat
             // 
-            this.reset.Location = new System.Drawing.Point(247, 73);
-            this.reset.Name = "reset";
-            this.reset.Size = new System.Drawing.Size(132, 23);
-            this.reset.TabIndex = 5;
-            this.reset.Text = "复位设备";
-            this.reset.UseVisualStyleBackColor = true;
-            this.reset.MouseClick += new System.Windows.Forms.MouseEventHandler(this.reset_MouseClick);
-            // 
-            // disconnect
-            // 
-            this.disconnect.Location = new System.Drawing.Point(247, 17);
-            this.disconnect.Name = "disconnect";
-            this.disconnect.Size = new System.Drawing.Size(132, 23);
-            this.disconnect.TabIndex = 6;
-            this.disconnect.Text = "断开连接";
-            this.disconnect.UseVisualStyleBackColor = true;
-            this.disconnect.MouseClick += new System.Windows.Forms.MouseEventHandler(this.disconnect_MouseClick);
+            this.buttonactivat.Location = new System.Drawing.Point(247, 44);
+            this.buttonactivat.Name = "buttonactivat";
+            this.buttonactivat.Size = new System.Drawing.Size(132, 23);
+            this.buttonactivat.TabIndex = 8;
+            this.buttonactivat.Text = "激活入网";
+            this.buttonactivat.UseVisualStyleBackColor = true;
+            this.buttonactivat.Click += new System.EventHandler(this.buttonactivat_Click);
             // 
             // Form1
             // 
@@ -708,6 +720,7 @@
         private System.Windows.Forms.TextBox texboxport;
         private System.Windows.Forms.Button disconnect;
         private System.Windows.Forms.Button reset;
+        private System.Windows.Forms.Button buttonactivat;
     }
 }
 

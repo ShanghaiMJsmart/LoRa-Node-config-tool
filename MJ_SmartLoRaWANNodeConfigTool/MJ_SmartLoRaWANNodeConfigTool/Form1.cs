@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
+using System;
+using System.Threading;
 
 namespace MJ_SmartLoRaWANNodeConfigTool
 {
@@ -51,11 +53,139 @@ namespace MJ_SmartLoRaWANNodeConfigTool
         {
 
         }
+        
+        private void getdeviceinfo()
+        {
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 10).ToArray();
+            byte[] datatosend;
+            byte[] cmdbyte;
 
+            if (!serialPort.IsOpen)
+            {
+                return;
+            }
+
+            syncbyte[9] = 0x55;
+
+            cmdbyte = null;
+            datatosend = null;
+            cmdbyte = new byte[256 * 4];
+            datatosend = new byte[256 * 4];
+            Array.Copy(syncbyte, datatosend, syncbyte.Length);
+            cmdbyte = System.Text.Encoding.Default.GetBytes("AT\r\n");
+            this.BeginInvoke(new Action(() => {
+                richtexboxreceive.Text += "AT\r\n";
+            }));
+            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
+            try
+            {
+                serialPort.Write(syncbyte, 0, syncbyte.Length);
+                serialPort.Write(cmdbyte, 0, cmdbyte.Length);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                serialPort.Close();
+                simulatecomunication.Enabled = false;
+                return;
+            }
+            System.Threading.Thread.Sleep(20);
+            cmdbyte = null;
+            datatosend = null;
+            cmdbyte = new byte[256 * 4];
+            datatosend = new byte[256 * 4];
+            Array.Copy(syncbyte, datatosend, syncbyte.Length);
+            cmdbyte = System.Text.Encoding.Default.GetBytes("ATV?\r");
+            this.BeginInvoke(new Action(() => {
+                richtexboxreceive.Text += "ATV?\r";
+            }));
+            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
+            try
+            {
+                serialPort.Write(datatosend, 0, datatosend.Length);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                serialPort.Close();
+                simulatecomunication.Enabled = false;
+                return;
+            }
+            System.Threading.Thread.Sleep(20);
+            cmdbyte = null;
+            datatosend = null;
+            cmdbyte = new byte[256 * 4];
+            datatosend = new byte[256 * 4];
+            Array.Copy(syncbyte, datatosend, syncbyte.Length);
+            cmdbyte = System.Text.Encoding.Default.GetBytes("ATG?\r");
+            this.BeginInvoke(new Action(() => {
+                richtexboxreceive.Text += "ATG?\r";
+            }));
+            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
+            try
+            {
+                serialPort.Write(syncbyte, 0, syncbyte.Length);
+                serialPort.Write(cmdbyte, 0, cmdbyte.Length);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                serialPort.Close();
+                simulatecomunication.Enabled = false;
+                return;
+            }
+            System.Threading.Thread.Sleep(20);
+            cmdbyte = null;
+            datatosend = null;
+            cmdbyte = new byte[256 * 4];
+            datatosend = new byte[256 * 4];
+            Array.Copy(syncbyte, datatosend, syncbyte.Length);
+            cmdbyte = System.Text.Encoding.Default.GetBytes("ATJ?\r");
+            this.BeginInvoke(new Action(() => {
+                richtexboxreceive.Text += "ATJ?\r";
+            }));
+            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
+            try
+            {
+                serialPort.Write(syncbyte, 0, syncbyte.Length);
+                serialPort.Write(cmdbyte, 0, cmdbyte.Length);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                serialPort.Close();
+                simulatecomunication.Enabled = false;
+                return;
+            }
+            System.Threading.Thread.Sleep(20);
+            cmdbyte = null;
+            datatosend = null;
+            cmdbyte = new byte[256 * 4];
+            datatosend = new byte[256 * 4];
+            Array.Copy(syncbyte, datatosend, syncbyte.Length);
+            cmdbyte = System.Text.Encoding.Default.GetBytes("ATS?\r\n");
+            this.BeginInvoke(new Action(() => {
+                richtexboxreceive.Text += "ATS?\r\n";
+            }));
+            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
+            try
+            {
+                serialPort.Write(syncbyte, 0, syncbyte.Length);
+                serialPort.Write(cmdbyte, 0, cmdbyte.Length);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                serialPort.Close();
+                simulatecomunication.Enabled = false;
+                return;
+            }
+
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
-            serialportlist.SelectedIndex = serialportlist.Items.IndexOf("-请选择端口-");
-            comboxactivatymethod.SelectedIndex = comboxactivatymethod.Items.IndexOf("OTAA");
+            serialportlist.SelectedIndex = serialportlist.Items.IndexOf("-选择端口-");
+            comboxactivatymethod.SelectedIndex = comboxactivatymethod.Items.IndexOf("-激活方式-");
             comboxnodetype.SelectedIndex = comboxnodetype.Items.IndexOf("Class A");
             if (comboxnodetype.SelectedIndex == comboxnodetype.Items.IndexOf("Class A"))
             {
@@ -75,8 +205,11 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             {
                 simulatecomunication.Enabled = false;
             }
-            
+            //Thread thgetdeviceinfo;
+            //thgetdeviceinfo = new Thread(getdeviceinfo);
+            //thgetdeviceinfo.Start(); //启动线程   
         }
+
 
         private void comboxactivatymethod_SelectionChangeCommitted(object sender, EventArgs e)
         {
@@ -139,13 +272,20 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 return;
             }
             //stringreceived = stringreceived.Insert(stringreceived.Length, "\r\n");
-            richtexboxreceive.Text += stringreceived;
-            richtexboxreceive.Text += "\r\n";
+            //richtexboxreceive.Text += stringreceived;
+            //richtexboxreceive.Text += "\r\n";
+            this.BeginInvoke(new Action(() => {
+                richtexboxreceive.Text += stringreceived;
+                richtexboxreceive.Text += "\r\n";
+            }));
+
             if (stringreceived.IndexOf("VERSION") >= 0)
             {
                 stringreceived = stringreceived.Remove(0, 3);
-                texfirewareversion.Text = stringreceived;
-                simulatecomunication.Enabled = true;
+                this.BeginInvoke(new Action(() => {
+                    texfirewareversion.Text = stringreceived;
+                    simulatecomunication.Enabled = true;
+                }));
             }
             string[] sArray = stringreceived.Split(new char[1] { ',' });
             int stringcnt = 0;
@@ -165,6 +305,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             }
             if ((stringcnt == 5) && (sArray[0] == "OK") && (sArray[1].Length == 2) && (sArray[2].Length == 2) && (sArray[3].Length == 2) && (sArray[4].Length == 2))
             {
+                this.BeginInvoke(new Action(() => {
                 textBoxstartchannel.Text = byteToHexStr(strToToHexByte(sArray[1]));
                 texboxendchannel.Text = byteToHexStr(strToToHexByte(sArray[2]));
                 switch (sArray[3])
@@ -192,25 +333,32 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                         break;
 
                 }
+                }));
             }
             if ((stringcnt == 3) && (sArray[0] == "OK") && (sArray[1].Length == 16) && (sArray[2].Length == 16))
             {
-                texboxdeviceeui.Text = byteToHexStr(strToToHexByte(sArray[1]));
-                texboxappeui.Text = byteToHexStr(strToToHexByte(sArray[2]));
+                this.BeginInvoke(new Action(() => {
+                    texboxdeviceeui.Text = byteToHexStr(strToToHexByte(sArray[1]));
+                    texboxappeui.Text = byteToHexStr(strToToHexByte(sArray[2]));
+                }));
             }
 
             if ((stringcnt == 5) && (sArray[0] == "OK") && (sArray[1].Length == 8) && (sArray[2].Length == 8) && (sArray[3].Length == 8) && (sArray[4].Length == 8))
             {
-                texboxnetid.Text = byteToHexStr(strToToHexByte(sArray[1]));
-                texboxdevaddress.Text = byteToHexStr(strToToHexByte(sArray[2]));
-                //texboxnwkkey.Text = byteToHexStr(strToToHexByte(sArray[3]));
-                //texboxappkey.Text = byteToHexStr(strToToHexByte(sArray[4].Remove(8,2)));
+                this.BeginInvoke(new Action(() => {
+                    texboxnetid.Text = byteToHexStr(strToToHexByte(sArray[1]));
+                    texboxdevaddress.Text = byteToHexStr(strToToHexByte(sArray[2]));
+                    //texboxnwkkey.Text = byteToHexStr(strToToHexByte(sArray[3]));
+                    //texboxappkey.Text = byteToHexStr(strToToHexByte(sArray[4].Remove(8,2)));
+                }));
             }
             if ((sArray[0] == "EV_TXCOMPLETE") && (sArray[1] != "00"))
             {
                 int inttexboxreceivecnt = Convert.ToInt32(texboxreceivecnt.Text);
                 inttexboxreceivecnt++;
-                texboxreceivecnt.Text = Convert.ToString(inttexboxreceivecnt);
+                this.BeginInvoke(new Action(() => {
+                    texboxreceivecnt.Text = Convert.ToString(inttexboxreceivecnt);
+                }));
             }
             /*if (stringreceived.IndexOf("EV_TXCOMPLETE") >= 0)
             {
@@ -226,8 +374,10 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             {
                 int inttexboxreceivecnt = Convert.ToInt32(texboxreceivecnt.Text);
                 inttexboxreceivecnt++;
-                texboxreceivecnt.Text = Convert.ToString(inttexboxreceivecnt);
-            }
+                this.BeginInvoke(new Action(() => {
+                    texboxreceivecnt.Text = Convert.ToString(inttexboxreceivecnt);
+                }));
+        }
         }
 
         private void setglobalparameter()
@@ -286,124 +436,6 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             }
             richtexboxreceive.Text += simulatesendstring;
         }
-        private void getdeviceinfo()
-        {
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 10).ToArray();
-            byte[] datatosend;
-            byte[] cmdbyte;
-
-            if (!serialPort.IsOpen)
-            {
-                return ;
-            }
-
-            syncbyte[9] = 0x55;
-
-            cmdbyte = null;
-            datatosend = null;
-            cmdbyte = new byte[256 * 4];
-            datatosend = new byte[256 * 4];
-            Array.Copy(syncbyte, datatosend, syncbyte.Length);
-            cmdbyte = System.Text.Encoding.Default.GetBytes("AT\r\n");
-            richtexboxreceive.Text += "AT\r\n";
-            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
-            try
-            {
-                serialPort.Write(syncbyte, 0, syncbyte.Length);
-                serialPort.Write(cmdbyte, 0, cmdbyte.Length);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                serialPort.Close();
-                simulatecomunication.Enabled = false;
-                return;
-            }
-            System.Threading.Thread.Sleep(200);
-            cmdbyte = null;
-            datatosend = null;
-            cmdbyte = new byte[256 * 4];
-            datatosend = new byte[256 * 4];
-            Array.Copy(syncbyte, datatosend, syncbyte.Length);
-            cmdbyte = System.Text.Encoding.Default.GetBytes("ATV?\r");
-            richtexboxreceive.Text += "ATV?\r";
-            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
-            try
-            {
-                serialPort.Write(datatosend, 0, datatosend.Length);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                serialPort.Close();
-                simulatecomunication.Enabled = false;
-                return;
-            }
-            System.Threading.Thread.Sleep(200);
-            cmdbyte = null;
-            datatosend = null;
-            cmdbyte = new byte[256 * 4];
-            datatosend = new byte[256 * 4];
-            Array.Copy(syncbyte, datatosend, syncbyte.Length);
-            cmdbyte = System.Text.Encoding.Default.GetBytes("ATG?\r");
-            richtexboxreceive.Text += "ATG?\r";
-            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
-            try
-            {
-                serialPort.Write(syncbyte, 0, syncbyte.Length);
-                serialPort.Write(cmdbyte, 0, cmdbyte.Length);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                serialPort.Close();
-                simulatecomunication.Enabled = false;
-                return;
-            }
-            System.Threading.Thread.Sleep(200);
-            cmdbyte = null;
-            datatosend = null;
-            cmdbyte = new byte[256 * 4];
-            datatosend = new byte[256 * 4];
-            Array.Copy(syncbyte, datatosend, syncbyte.Length);
-            cmdbyte = System.Text.Encoding.Default.GetBytes("ATJ?\r");
-            richtexboxreceive.Text += "ATJ?\r";
-            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
-            try
-            {
-                serialPort.Write(syncbyte, 0, syncbyte.Length);
-                serialPort.Write(cmdbyte, 0, cmdbyte.Length);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                serialPort.Close();
-                simulatecomunication.Enabled = false;
-                return;
-            }
-            System.Threading.Thread.Sleep(200);
-            cmdbyte = null;
-            datatosend = null;
-            cmdbyte = new byte[256 * 4];
-            datatosend = new byte[256 * 4];
-            Array.Copy(syncbyte, datatosend, syncbyte.Length);
-            cmdbyte = System.Text.Encoding.Default.GetBytes("ATS?\r\n");
-            richtexboxreceive.Text += "ATS?\r\n";
-            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
-            try
-            {
-                serialPort.Write(syncbyte, 0, syncbyte.Length);
-                serialPort.Write(cmdbyte, 0, cmdbyte.Length);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                serialPort.Close();
-                simulatecomunication.Enabled = false;
-                return;
-            }
-
-        }
 
         private void serialportlist_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -416,7 +448,10 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             if(serialPort.IsOpen == true)
             {
                 simulatecomunication.Enabled = true;
-                getdeviceinfo();
+                //getdeviceinfo();
+                Thread thgetdeviceinfo;
+                thgetdeviceinfo = new Thread(getdeviceinfo);
+                thgetdeviceinfo.Start(); //启动线程
             }
             else
             {
@@ -446,7 +481,10 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                         simulatecomunication.Enabled = false;
                         return;
                     }
-                    getdeviceinfo();
+                    //getdeviceinfo();
+                    Thread thgetdeviceinfo;
+                    thgetdeviceinfo = new Thread(getdeviceinfo);
+                    thgetdeviceinfo.Start(); //启动线程
                 }
             }
         }
@@ -505,7 +543,10 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                     simulatecomunication.Enabled = false;
                     return;
                 }
-                getdeviceinfo();
+                //getdeviceinfo();
+                Thread thgetdeviceinfo;
+                thgetdeviceinfo = new Thread(getdeviceinfo);
+                thgetdeviceinfo.Start(); //启动线程
             }
         }
 
@@ -622,7 +663,10 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             byte[] simulatesendbyte = null;
             string simulatesendstring = null;
             //string simulatesenddata = null;
-
+            if(serialPort.IsOpen == false)
+            {
+                return;
+            }
             simulatesendstring = "ATJ=";
             simulatesendbyte = strToToHexByte(texboxdeviceeui.Text);
             texboxdeviceeui.Text = byteToHexStr(simulatesendbyte);
@@ -670,7 +714,10 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             byte[] simulatesendbyte = null;
             string simulatesendstring = null;
             //string simulatesenddata = null;
-
+            if (serialPort.IsOpen == false)
+            {
+                return;
+            }
             simulatesendstring = "ATS=";
             simulatesendbyte = strToToHexByte(texboxnetid.Text);
             texboxnetid.Text = byteToHexStr(simulatesendbyte);
@@ -754,6 +801,40 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             Array.Copy(syncbyte, datatosend, syncbyte.Length);
             cmdbyte = System.Text.Encoding.Default.GetBytes("ATZ\r\n");
             richtexboxreceive.Text += "ATZ\r\n";
+            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
+            try
+            {
+                serialPort.Write(datatosend, 0, datatosend.Length);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                serialPort.Close();
+                simulatecomunication.Enabled = false;
+                return;
+            }
+        }
+
+        private void buttonactivat_Click(object sender, EventArgs e)
+        {
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 25).ToArray();
+            byte[] datatosend;
+            byte[] cmdbyte;
+
+            if (!serialPort.IsOpen)
+            {
+                return;
+            }
+
+            syncbyte[24] = 0x55;
+
+            cmdbyte = null;
+            datatosend = null;
+            cmdbyte = new byte[256 * 4];
+            datatosend = new byte[256 * 4];
+            Array.Copy(syncbyte, datatosend, syncbyte.Length);
+            cmdbyte = System.Text.Encoding.Default.GetBytes("ATJ\r\n");
+            richtexboxreceive.Text += "ATJ\r\n";
             Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
             try
             {
