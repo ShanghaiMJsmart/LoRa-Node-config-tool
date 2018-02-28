@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.device = new System.Windows.Forms.GroupBox();
+            this.buttonactivat = new System.Windows.Forms.Button();
             this.disconnect = new System.Windows.Forms.Button();
             this.reset = new System.Windows.Forms.Button();
             this.comboxactivatymethod = new System.Windows.Forms.ComboBox();
@@ -78,7 +79,6 @@
             this.checkboxconfirm = new System.Windows.Forms.CheckBox();
             this.senddata = new System.Windows.Forms.Button();
             this.serialPort = new System.IO.Ports.SerialPort(this.components);
-            this.buttonactivat = new System.Windows.Forms.Button();
             this.device.SuspendLayout();
             this.GlobaleParameter.SuspendLayout();
             this.otaaactivaty.SuspendLayout();
@@ -102,6 +102,16 @@
             this.device.TabIndex = 0;
             this.device.TabStop = false;
             this.device.Text = "连接设备";
+            // 
+            // buttonactivat
+            // 
+            this.buttonactivat.Location = new System.Drawing.Point(247, 44);
+            this.buttonactivat.Name = "buttonactivat";
+            this.buttonactivat.Size = new System.Drawing.Size(132, 23);
+            this.buttonactivat.TabIndex = 8;
+            this.buttonactivat.Text = "激活入网";
+            this.buttonactivat.UseVisualStyleBackColor = true;
+            this.buttonactivat.Click += new System.EventHandler(this.buttonactivat_Click);
             // 
             // disconnect
             // 
@@ -216,7 +226,7 @@
             this.texboxtimer.Name = "texboxtimer";
             this.texboxtimer.Size = new System.Drawing.Size(127, 21);
             this.texboxtimer.TabIndex = 9;
-            this.texboxtimer.Text = "60";
+            this.texboxtimer.Text = "3C";
             // 
             // label4
             // 
@@ -236,7 +246,7 @@
             this.texboxendchannel.Name = "texboxendchannel";
             this.texboxendchannel.Size = new System.Drawing.Size(127, 21);
             this.texboxendchannel.TabIndex = 5;
-            this.texboxendchannel.Text = "4";
+            this.texboxendchannel.Text = "04";
             // 
             // endchannel
             // 
@@ -265,7 +275,7 @@
             this.textBoxstartchannel.Name = "textBoxstartchannel";
             this.textBoxstartchannel.Size = new System.Drawing.Size(122, 21);
             this.textBoxstartchannel.TabIndex = 2;
-            this.textBoxstartchannel.Text = "0";
+            this.textBoxstartchannel.Text = "00";
             // 
             // channelstart
             // 
@@ -631,16 +641,6 @@
             // serialPort
             // 
             this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
-            // 
-            // buttonactivat
-            // 
-            this.buttonactivat.Location = new System.Drawing.Point(247, 44);
-            this.buttonactivat.Name = "buttonactivat";
-            this.buttonactivat.Size = new System.Drawing.Size(132, 23);
-            this.buttonactivat.TabIndex = 8;
-            this.buttonactivat.Text = "激活入网";
-            this.buttonactivat.UseVisualStyleBackColor = true;
-            this.buttonactivat.Click += new System.EventHandler(this.buttonactivat_Click);
             // 
             // Form1
             // 

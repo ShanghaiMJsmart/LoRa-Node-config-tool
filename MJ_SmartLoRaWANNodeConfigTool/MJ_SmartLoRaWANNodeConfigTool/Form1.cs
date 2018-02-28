@@ -56,7 +56,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
         
         private void getdeviceinfo()
         {
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 10).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 15).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
@@ -65,7 +65,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 return;
             }
 
-            syncbyte[9] = 0x55;
+            syncbyte[14] = 0x55;
 
             cmdbyte = null;
             datatosend = null;
@@ -120,6 +120,29 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             cmdbyte = System.Text.Encoding.Default.GetBytes("ATG?\r");
             this.BeginInvoke(new Action(() => {
                 richtexboxreceive.Text += "ATG?\r";
+            }));
+            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
+            try
+            {
+                serialPort.Write(syncbyte, 0, syncbyte.Length);
+                serialPort.Write(cmdbyte, 0, cmdbyte.Length);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                serialPort.Close();
+                simulatecomunication.Enabled = false;
+                return;
+            }
+            System.Threading.Thread.Sleep(20);
+            cmdbyte = null;
+            datatosend = null;
+            cmdbyte = new byte[256 * 4];
+            datatosend = new byte[256 * 4];
+            Array.Copy(syncbyte, datatosend, syncbyte.Length);
+            cmdbyte = System.Text.Encoding.Default.GetBytes("ATA?\r");
+            this.BeginInvoke(new Action(() => {
+                richtexboxreceive.Text += "ATA?\r";
             }));
             Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
             try
@@ -383,7 +406,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
         private void setglobalparameter()
         {
             string simulatesendstring = null;
-
+            System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
             simulatesendstring = "ATG=";
             string hexstartchannel = textBoxstartchannel.Text.Replace(" " ,"");
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, hexstartchannel);
@@ -410,11 +433,35 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             }
             
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 10).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 15).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
-            syncbyte[9] = 0x55;
+            syncbyte[14] = 0x55;
+            cmdbyte = null;
+            datatosend = null;
+            cmdbyte = new byte[256 * 4];
+            datatosend = new byte[256 * 4];
+            Array.Copy(syncbyte, datatosend, syncbyte.Length);
+            cmdbyte = System.Text.Encoding.Default.GetBytes(simulatesendstring);
+            Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
+            try
+            {
+                serialPort.Write(syncbyte, 0, syncbyte.Length);
+                serialPort.Write(cmdbyte, 0, cmdbyte.Length);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                serialPort.Close();
+                simulatecomunication.Enabled = false;
+                return;
+            }
+            richtexboxreceive.Text += simulatesendstring;
+            simulatesendstring = "ATA=";
+            string hexalarm = texboxtimer.Text.Replace(" ", "");
+            simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, hexalarm);
+            simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -682,11 +729,11 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
             simulatesendstring = simulatesendstring.Replace(" ", "");
             richtexboxreceive.Text += simulatesendstring;
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 10).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 15).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
-            syncbyte[9] = 0x55;
+            syncbyte[14] = 0x55;
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -705,8 +752,9 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 simulatecomunication.Enabled = false;
                 return;
             }
-            System.Threading.Thread.Sleep(100);
-            setglobalparameter();
+            Thread thsetglobalparameter;
+            thsetglobalparameter = new Thread(setglobalparameter);
+            thsetglobalparameter.Start(); //启动线程
         }
 
         private void abpconfigwrite_Click(object sender, EventArgs e)
@@ -740,11 +788,11 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
             simulatesendstring = simulatesendstring.Replace(" ", "");
             richtexboxreceive.Text += simulatesendstring;
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 10).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 15).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
-            syncbyte[9] = 0x55;
+            syncbyte[14] = 0x55;
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -763,8 +811,9 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 simulatecomunication.Enabled = false;
                 return;
             }
-            System.Threading.Thread.Sleep(100);
-            setglobalparameter();
+            Thread thsetglobalparameter;
+            thsetglobalparameter = new Thread(setglobalparameter);
+            thsetglobalparameter.Start(); //启动线程
         }
 
         private void disconnect_MouseClick(object sender, MouseEventArgs e)
