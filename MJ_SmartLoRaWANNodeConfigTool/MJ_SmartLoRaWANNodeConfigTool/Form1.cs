@@ -56,7 +56,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
         
         private void getdeviceinfo()
         {
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 15).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
@@ -65,7 +65,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 return;
             }
 
-            syncbyte[14] = 0x55;
+            syncbyte[30] = 0x55;
 
             cmdbyte = null;
             datatosend = null;
@@ -89,7 +89,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 simulatecomunication.Enabled = false;
                 return;
             }
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(100);
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -111,7 +111,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 simulatecomunication.Enabled = false;
                 return;
             }
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(100);
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -134,7 +134,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 simulatecomunication.Enabled = false;
                 return;
             }
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(100);
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -157,7 +157,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 simulatecomunication.Enabled = false;
                 return;
             }
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(100);
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -180,7 +180,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 simulatecomunication.Enabled = false;
                 return;
             }
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(100);
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -406,7 +406,8 @@ namespace MJ_SmartLoRaWANNodeConfigTool
         private void setglobalparameter()
         {
             string simulatesendstring = null;
-            System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
+            //System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
+            System.Threading.Thread.Sleep(100);
             simulatesendstring = "ATG=";
             string hexstartchannel = textBoxstartchannel.Text.Replace(" " ,"");
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, hexstartchannel);
@@ -433,11 +434,11 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             }
             
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 15).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
-            syncbyte[14] = 0x55;
+            syncbyte[30] = 0x55;
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -636,11 +637,11 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, simulatesenddata);
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
             richtexboxreceive.Text += simulatesendstring;
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 25).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
-            syncbyte[24] = 0x55;
+            syncbyte[30] = 0x55;
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -673,7 +674,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
 
         private void factoryreset_Click(object sender, EventArgs e)
         {
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 25).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
@@ -682,7 +683,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 return ;
             }
 
-            syncbyte[24] = 0x55;
+            syncbyte[30] = 0x55;
 
             cmdbyte = null;
             datatosend = null;
@@ -729,11 +730,11 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
             simulatesendstring = simulatesendstring.Replace(" ", "");
             richtexboxreceive.Text += simulatesendstring;
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 15).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
-            syncbyte[14] = 0x55;
+            syncbyte[30] = 0x55;
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -788,11 +789,11 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
             simulatesendstring = simulatesendstring.Replace(" ", "");
             richtexboxreceive.Text += simulatesendstring;
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 15).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
-            syncbyte[14] = 0x55;
+            syncbyte[30] = 0x55;
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -832,7 +833,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
 
         private void reset_MouseClick(object sender, MouseEventArgs e)
         {
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 25).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
@@ -841,7 +842,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 return;
             }
 
-            syncbyte[24] = 0x55;
+            syncbyte[30] = 0x55;
 
             cmdbyte = null;
             datatosend = null;
@@ -866,7 +867,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
 
         private void buttonactivat_Click(object sender, EventArgs e)
         {
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 25).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
@@ -875,7 +876,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 return;
             }
 
-            syncbyte[24] = 0x55;
+            syncbyte[30] = 0x55;
 
             cmdbyte = null;
             datatosend = null;
