@@ -56,7 +56,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
         
         private void getdeviceinfo()
         {
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 36).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
@@ -65,7 +65,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 return;
             }
 
-            syncbyte[30] = 0x55;
+            syncbyte[35] = 0x55;
 
             cmdbyte = null;
             datatosend = null;
@@ -236,6 +236,16 @@ namespace MJ_SmartLoRaWANNodeConfigTool
 
         private void comboxactivatymethod_SelectionChangeCommitted(object sender, EventArgs e)
         {
+            if (comboxactivatymethod.SelectedIndex == comboxactivatymethod.Items.IndexOf("OTAA"))
+            {
+                abpactivaty.Enabled = false;
+                otaaactivaty.Enabled = true;
+            }
+            if (comboxactivatymethod.SelectedIndex == comboxactivatymethod.Items.IndexOf("ABP"))
+            {
+                otaaactivaty.Enabled = false;
+                abpactivaty.Enabled = true;
+            }
         }
 
         private void comboxactivatymethod_SelectedIndexChanged(object sender, EventArgs e)
@@ -329,15 +339,20 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             if ((stringcnt == 5) && (sArray[0] == "OK") && (sArray[1].Length == 2) && (sArray[2].Length == 2) && (sArray[3].Length == 2) && (sArray[4].Length == 2))
             {
                 this.BeginInvoke(new Action(() => {
-                textBoxstartchannel.Text = byteToHexStr(strToToHexByte(sArray[1]));
-                texboxendchannel.Text = byteToHexStr(strToToHexByte(sArray[2]));
+                textBoxstartchannel.Text = Convert.ToInt32(sArray[1], 16).ToString();
+                texboxendchannel.Text = Convert.ToInt32(sArray[2], 16).ToString();
+                }));
                 switch (sArray[3])
                 {
                     case "00":
-                        comboxnodetype.SelectedIndex = 0;
-                        break;
+                        this.BeginInvoke(new Action(() => {
+                            comboxnodetype.SelectedIndex = 0;
+                        }));
+                break;
                     case "02":
-                        comboxnodetype.SelectedIndex = 2;
+                        this.BeginInvoke(new Action(() => {
+                            comboxnodetype.SelectedIndex = 1;
+                        }));
                         break;
                     default:
                         break;
@@ -347,16 +362,20 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 switch (activatymethod)
                 {
                     case "01":
-                        comboxactivatymethod.SelectedIndex = 1;
+                        this.BeginInvoke(new Action(() => {
+                            comboxactivatymethod.SelectedIndex = 1;
+                        }));
                         break;
                     case "02":
-                        comboxactivatymethod.SelectedIndex = 2;
+                        this.BeginInvoke(new Action(() => {
+                            comboxactivatymethod.SelectedIndex = 2;
+                        }));
                         break;
                     default:
                         break;
 
                 }
-                }));
+                
             }
             if ((stringcnt == 3) && (sArray[0] == "OK") && (sArray[1].Length == 16) && (sArray[2].Length == 16))
             {
@@ -375,7 +394,14 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                     //texboxappkey.Text = byteToHexStr(strToToHexByte(sArray[4].Remove(8,2)));
                 }));
             }
-            if ((sArray[0] == "EV_TXCOMPLETE") && (sArray[1] != "00"))
+            if ((stringcnt == 2) && (sArray[0] == "OK") && (sArray[1].Length == 8))
+            {
+                int inttexboxtimer = Convert.ToInt32(sArray[1],16);
+                this.BeginInvoke(new Action(() => {
+                    texboxtimer.Text = Convert.ToString(inttexboxtimer);
+                }));
+            }
+            if ((stringcnt == 2) && (sArray[0] == "EV_TXCOMPLETE") && (sArray[1] != "00"))
             {
                 int inttexboxreceivecnt = Convert.ToInt32(texboxreceivecnt.Text);
                 inttexboxreceivecnt++;
@@ -407,18 +433,22 @@ namespace MJ_SmartLoRaWANNodeConfigTool
         {
             string simulatesendstring = null;
             //System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(400);
             simulatesendstring = "ATG=";
-            string hexstartchannel = textBoxstartchannel.Text.Replace(" " ,"");
+            int intstartchannel = Convert.ToInt32(textBoxstartchannel.Text, 10);
+            string hexstartchannel = intstartchannel.ToString("X2");
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, hexstartchannel);
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, ",");
 
-            string hexendchannel = texboxendchannel.Text.Replace(" " ,"");
+            int intendchannel = Convert.ToInt32(texboxendchannel.Text, 10);
+            string hexendchannel = intendchannel.ToString("X2");
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, hexendchannel);
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, ",");
 
             string hexnodetype;
-            switch (comboxnodetype.Text)
+
+            switch (comboxnodetypeText)
+            //switch (comboxnodetype.Text)
             {
                 case "Class A":
                     hexnodetype = "00";
@@ -430,15 +460,17 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                     break;
                 default:
                     hexnodetype = "00";
+                    simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, hexnodetype);
                     break;
             }
             
+            
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 36).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
-            syncbyte[30] = 0x55;
+            syncbyte[35] = 0x55;
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -458,9 +490,14 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 simulatecomunication.Enabled = false;
                 return;
             }
-            richtexboxreceive.Text += simulatesendstring;
+            this.BeginInvoke(new Action(() => {
+                richtexboxreceive.Text += simulatesendstring;
+            }));
+            System.Threading.Thread.Sleep(400);
             simulatesendstring = "ATA=";
-            string hexalarm = texboxtimer.Text.Replace(" ", "");
+            int inttimer = Convert.ToInt32(texboxtimer.Text, 10);
+            string hexalarm = inttimer.ToString("X8");
+            //string hexalarm = texboxtimer.Text.Replace(" ", "");
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, hexalarm);
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
             cmdbyte = null;
@@ -482,7 +519,9 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 simulatecomunication.Enabled = false;
                 return;
             }
-            richtexboxreceive.Text += simulatesendstring;
+            this.BeginInvoke(new Action(() => {
+                richtexboxreceive.Text += simulatesendstring;
+            }));
         }
 
         private void serialportlist_SelectedIndexChanged(object sender, EventArgs e)
@@ -612,12 +651,8 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             {
                 simulatesendstring = "ATT0,";
             }
-
-            int inttexboxport = Convert.ToInt32(texboxport.Text);
-            byte[] hexbytes = BitConverter.GetBytes(inttexboxport);
-            string hexport = byteToHexStr(hexbytes);
-            hexport = hexport.Replace(" ", "");
-            hexport = hexport.Replace("00", "");
+            int inttexboxport = Convert.ToInt32(texboxport.Text, 10);
+            string hexport = inttexboxport.ToString("X2");
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, hexport);
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, ",");
 
@@ -628,7 +663,6 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             }
             else
             {
-
                 simulatesendbyte = System.Text.Encoding.Default.GetBytes(richtexboxsend.Text);
                 simulatesenddata = byteToHexStr(simulatesendbyte);
                 simulatesenddata = simulatesenddata.Replace(" ", "");
@@ -637,11 +671,11 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, simulatesenddata);
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
             richtexboxreceive.Text += simulatesendstring;
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 36).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
-            syncbyte[30] = 0x55;
+            syncbyte[35] = 0x55;
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -674,7 +708,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
 
         private void factoryreset_Click(object sender, EventArgs e)
         {
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 36).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
@@ -683,7 +717,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 return ;
             }
 
-            syncbyte[30] = 0x55;
+            syncbyte[35] = 0x55;
 
             cmdbyte = null;
             datatosend = null;
@@ -729,12 +763,12 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, texboxdevicekey.Text);
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
             simulatesendstring = simulatesendstring.Replace(" ", "");
-            richtexboxreceive.Text += simulatesendstring;
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
+            
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 36).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
-            syncbyte[30] = 0x55;
+            syncbyte[35] = 0x55;
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -744,7 +778,8 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
             try
             {
-                serialPort.Write(datatosend, 0, datatosend.Length);
+                serialPort.Write(syncbyte, 0, syncbyte.Length);
+                serialPort.Write(cmdbyte, 0, cmdbyte.Length);
             }
             catch (Exception ex)
             {
@@ -753,6 +788,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 simulatecomunication.Enabled = false;
                 return;
             }
+            richtexboxreceive.Text += simulatesendstring;
             Thread thsetglobalparameter;
             thsetglobalparameter = new Thread(setglobalparameter);
             thsetglobalparameter.Start(); //启动线程
@@ -788,12 +824,12 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, texboxappkey.Text);
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, "\r\n");
             simulatesendstring = simulatesendstring.Replace(" ", "");
-            richtexboxreceive.Text += simulatesendstring;
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
+            
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 36).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
-            syncbyte[30] = 0x55;
+            syncbyte[35] = 0x55;
             cmdbyte = null;
             datatosend = null;
             cmdbyte = new byte[256 * 4];
@@ -803,7 +839,8 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             Array.Copy(cmdbyte, 0, datatosend, syncbyte.Length, cmdbyte.Length);
             try
             {
-                serialPort.Write(datatosend, 0, datatosend.Length);
+                serialPort.Write(syncbyte, 0, syncbyte.Length);
+                serialPort.Write(cmdbyte, 0, cmdbyte.Length);
             }
             catch (Exception ex)
             {
@@ -812,6 +849,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 simulatecomunication.Enabled = false;
                 return;
             }
+            richtexboxreceive.Text += simulatesendstring;
             Thread thsetglobalparameter;
             thsetglobalparameter = new Thread(setglobalparameter);
             thsetglobalparameter.Start(); //启动线程
@@ -833,7 +871,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
 
         private void reset_MouseClick(object sender, MouseEventArgs e)
         {
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 36).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
@@ -842,7 +880,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 return;
             }
 
-            syncbyte[30] = 0x55;
+            syncbyte[35] = 0x55;
 
             cmdbyte = null;
             datatosend = null;
@@ -867,7 +905,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
 
         private void buttonactivat_Click(object sender, EventArgs e)
         {
-            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 31).ToArray();
+            byte[] syncbyte = Enumerable.Repeat((byte)0xff, 36).ToArray();
             byte[] datatosend;
             byte[] cmdbyte;
 
@@ -876,7 +914,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 return;
             }
 
-            syncbyte[30] = 0x55;
+            syncbyte[35] = 0x55;
 
             cmdbyte = null;
             datatosend = null;
@@ -897,6 +935,53 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 simulatecomunication.Enabled = false;
                 return;
             }
+        }
+
+
+        private string comboxnodetypeText = "Class A";
+
+        private void Comboxnodetype_SelectedValueChanged(object sender, System.EventArgs e)
+        {
+            comboxnodetypeText = comboxnodetype.Text ?? "";
+        }
+
+        private void comboxnodetype_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            comboxnodetypeText = comboxnodetype.Text ?? "";
+        }
+
+        private void comboxactivatymethod_SelectionChangeCommitted_1(object sender, EventArgs e)
+        {
+            if (comboxactivatymethod.SelectedIndex == comboxactivatymethod.Items.IndexOf("OTAA"))
+            {
+                abpactivaty.Enabled = false;
+                otaaactivaty.Enabled = true;
+            }
+            if (comboxactivatymethod.SelectedIndex == comboxactivatymethod.Items.IndexOf("ABP"))
+            {
+                otaaactivaty.Enabled = false;
+                abpactivaty.Enabled = true;
+            }
+        }
+
+        private void comboxnodetype_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboxnodetypeText = comboxnodetype.Text ?? "";
+        }
+
+        private void comboxactivatymethod_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            if (comboxactivatymethod.SelectedIndex == comboxactivatymethod.Items.IndexOf("OTAA"))
+            {
+                abpactivaty.Enabled = false;
+                otaaactivaty.Enabled = true;
+            }
+            if (comboxactivatymethod.SelectedIndex == comboxactivatymethod.Items.IndexOf("ABP"))
+            {
+                otaaactivaty.Enabled = false;
+                abpactivaty.Enabled = true;
+            }
+
         }
     }
 }

@@ -30,15 +30,16 @@
         {
             this.components = new System.ComponentModel.Container();
             this.device = new System.Windows.Forms.GroupBox();
+            this.comboxactivatymethod = new System.Windows.Forms.ComboBox();
             this.buttonactivat = new System.Windows.Forms.Button();
             this.disconnect = new System.Windows.Forms.Button();
             this.reset = new System.Windows.Forms.Button();
-            this.comboxactivatymethod = new System.Windows.Forms.ComboBox();
             this.factoryreset = new System.Windows.Forms.Button();
             this.texfirewareversion = new System.Windows.Forms.TextBox();
             this.connect = new System.Windows.Forms.Button();
             this.serialportlist = new System.Windows.Forms.ComboBox();
             this.GlobaleParameter = new System.Windows.Forms.GroupBox();
+            this.comboxnodetype = new System.Windows.Forms.ComboBox();
             this.texboxtimer = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.texboxendchannel = new System.Windows.Forms.TextBox();
@@ -46,7 +47,6 @@
             this.nodetype = new System.Windows.Forms.Label();
             this.textBoxstartchannel = new System.Windows.Forms.TextBox();
             this.channelstart = new System.Windows.Forms.Label();
-            this.comboxnodetype = new System.Windows.Forms.ComboBox();
             this.otaaactivaty = new System.Windows.Forms.GroupBox();
             this.otaaconfigwrite = new System.Windows.Forms.Button();
             this.texboxdevicekey = new System.Windows.Forms.TextBox();
@@ -88,10 +88,10 @@
             // 
             // device
             // 
+            this.device.Controls.Add(this.comboxactivatymethod);
             this.device.Controls.Add(this.buttonactivat);
             this.device.Controls.Add(this.disconnect);
             this.device.Controls.Add(this.reset);
-            this.device.Controls.Add(this.comboxactivatymethod);
             this.device.Controls.Add(this.factoryreset);
             this.device.Controls.Add(this.texfirewareversion);
             this.device.Controls.Add(this.connect);
@@ -102,6 +102,22 @@
             this.device.TabIndex = 0;
             this.device.TabStop = false;
             this.device.Text = "连接设备";
+            // 
+            // comboxactivatymethod
+            // 
+            this.comboxactivatymethod.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboxactivatymethod.FormattingEnabled = true;
+            this.comboxactivatymethod.Items.AddRange(new object[] {
+            "-激活方式-",
+            "OTAA",
+            "ABP"});
+            this.comboxactivatymethod.Location = new System.Drawing.Point(6, 75);
+            this.comboxactivatymethod.Name = "comboxactivatymethod";
+            this.comboxactivatymethod.Size = new System.Drawing.Size(92, 20);
+            this.comboxactivatymethod.TabIndex = 9;
+            this.comboxactivatymethod.SelectedIndexChanged += new System.EventHandler(this.comboxactivatymethod_SelectedIndexChanged_1);
+            this.comboxactivatymethod.SelectionChangeCommitted += new System.EventHandler(this.comboxactivatymethod_SelectionChangeCommitted_1);
             // 
             // buttonactivat
             // 
@@ -132,22 +148,6 @@
             this.reset.Text = "复位设备";
             this.reset.UseVisualStyleBackColor = true;
             this.reset.MouseClick += new System.Windows.Forms.MouseEventHandler(this.reset_MouseClick);
-            // 
-            // comboxactivatymethod
-            // 
-            this.comboxactivatymethod.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboxactivatymethod.FormattingEnabled = true;
-            this.comboxactivatymethod.Items.AddRange(new object[] {
-            "-激活方式-",
-            "OTAA",
-            "ABP"});
-            this.comboxactivatymethod.Location = new System.Drawing.Point(6, 75);
-            this.comboxactivatymethod.Name = "comboxactivatymethod";
-            this.comboxactivatymethod.Size = new System.Drawing.Size(92, 20);
-            this.comboxactivatymethod.TabIndex = 7;
-            this.comboxactivatymethod.SelectedIndexChanged += new System.EventHandler(this.comboxactivatymethod_SelectedIndexChanged);
-            this.comboxactivatymethod.SelectionChangeCommitted += new System.EventHandler(this.comboxactivatymethod_SelectionChangeCommitted);
             // 
             // factoryreset
             // 
@@ -203,6 +203,7 @@
             // 
             // GlobaleParameter
             // 
+            this.GlobaleParameter.Controls.Add(this.comboxnodetype);
             this.GlobaleParameter.Controls.Add(this.texboxtimer);
             this.GlobaleParameter.Controls.Add(this.label4);
             this.GlobaleParameter.Controls.Add(this.texboxendchannel);
@@ -210,13 +211,24 @@
             this.GlobaleParameter.Controls.Add(this.nodetype);
             this.GlobaleParameter.Controls.Add(this.textBoxstartchannel);
             this.GlobaleParameter.Controls.Add(this.channelstart);
-            this.GlobaleParameter.Controls.Add(this.comboxnodetype);
             this.GlobaleParameter.Location = new System.Drawing.Point(12, 119);
             this.GlobaleParameter.Name = "GlobaleParameter";
             this.GlobaleParameter.Size = new System.Drawing.Size(390, 67);
             this.GlobaleParameter.TabIndex = 1;
             this.GlobaleParameter.TabStop = false;
             this.GlobaleParameter.Text = "全局参数";
+            // 
+            // comboxnodetype
+            // 
+            this.comboxnodetype.FormattingEnabled = true;
+            this.comboxnodetype.Items.AddRange(new object[] {
+            "Class A",
+            "Class C"});
+            this.comboxnodetype.Location = new System.Drawing.Point(65, 13);
+            this.comboxnodetype.Name = "comboxnodetype";
+            this.comboxnodetype.Size = new System.Drawing.Size(122, 20);
+            this.comboxnodetype.TabIndex = 10;
+            this.comboxnodetype.SelectedIndexChanged += new System.EventHandler(this.comboxnodetype_SelectedIndexChanged);
             // 
             // texboxtimer
             // 
@@ -285,20 +297,6 @@
             this.channelstart.Size = new System.Drawing.Size(53, 12);
             this.channelstart.TabIndex = 1;
             this.channelstart.Text = "起始信道";
-            // 
-            // comboxnodetype
-            // 
-            this.comboxnodetype.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboxnodetype.FormattingEnabled = true;
-            this.comboxnodetype.Items.AddRange(new object[] {
-            "Class A",
-            "Class C"});
-            this.comboxnodetype.Location = new System.Drawing.Point(65, 14);
-            this.comboxnodetype.Name = "comboxnodetype";
-            this.comboxnodetype.Size = new System.Drawing.Size(122, 20);
-            this.comboxnodetype.TabIndex = 0;
             // 
             // otaaactivaty
             // 
@@ -676,7 +674,6 @@
         private System.Windows.Forms.Button connect;
         private System.Windows.Forms.ComboBox serialportlist;
         private System.Windows.Forms.GroupBox GlobaleParameter;
-        private System.Windows.Forms.ComboBox comboxactivatymethod;
         private System.Windows.Forms.TextBox texboxendchannel;
         private System.Windows.Forms.Label endchannel;
         private System.Windows.Forms.Label nodetype;
@@ -698,7 +695,6 @@
         private System.Windows.Forms.Label nwkkey;
         private System.Windows.Forms.Label devaddress;
         private System.Windows.Forms.Label netid;
-        private System.Windows.Forms.ComboBox comboxnodetype;
         private System.Windows.Forms.TextBox texboxtimer;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button factoryreset;
@@ -721,6 +717,8 @@
         private System.Windows.Forms.Button disconnect;
         private System.Windows.Forms.Button reset;
         private System.Windows.Forms.Button buttonactivat;
+        private System.Windows.Forms.ComboBox comboxactivatymethod;
+        private System.Windows.Forms.ComboBox comboxnodetype;
     }
 }
 
