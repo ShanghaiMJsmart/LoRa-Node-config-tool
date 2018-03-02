@@ -333,7 +333,7 @@
             this.texboxdevicekey.Name = "texboxdevicekey";
             this.texboxdevicekey.Size = new System.Drawing.Size(291, 21);
             this.texboxdevicekey.TabIndex = 5;
-            this.texboxdevicekey.Text = "AA 55 55 55 55 55 55 55 55 AA AA AA AA AA AA AA";
+            this.texboxdevicekey.Text = "2B 7E 15 16 28 AE D2 A6 AB F7 15 88 09 CF 4F 3C";
             // 
             // texboxappeui
             // 
@@ -343,7 +343,7 @@
             this.texboxappeui.Name = "texboxappeui";
             this.texboxappeui.Size = new System.Drawing.Size(291, 21);
             this.texboxappeui.TabIndex = 4;
-            this.texboxappeui.Text = "DE DE AA AA 00 00 00 1A";
+            this.texboxappeui.Text = "6D 65 64 6F 4D 2D 4A 4D ";
             // 
             // texboxdeviceeui
             // 
