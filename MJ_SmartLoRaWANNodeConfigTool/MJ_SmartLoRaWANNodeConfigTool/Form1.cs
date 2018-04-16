@@ -750,10 +750,10 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 return;
             }
             simulatesendstring = "ATJ=";
-            simulatesendbyte = strToToHexByte(texboxdeviceeui.Text);
+            /*simulatesendbyte = strToToHexByte(texboxdeviceeui.Text);
             texboxdeviceeui.Text = byteToHexStr(simulatesendbyte);
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, texboxdeviceeui.Text);
-            simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, ",");
+            simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, ",");*/
             simulatesendbyte = strToToHexByte(texboxappeui.Text);
             texboxappeui.Text = byteToHexStr(simulatesendbyte);
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, texboxappeui.Text);
@@ -982,6 +982,28 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 abpactivaty.Enabled = true;
             }
 
+        }
+
+        private void richtexboxsend_TextChanged(object sender, EventArgs e)
+        {
+            byte[] simulatesendbyte = null;
+            string simulatesendstring = "";
+            string simulatesenddata = null;
+
+            if (checkboxhex.Checked == true)
+            {
+                simulatesenddata = richtexboxsend.Text;
+                simulatesenddata = simulatesenddata.Replace(" ", "");
+            }
+            else
+            {
+                simulatesendbyte = System.Text.Encoding.Default.GetBytes(richtexboxsend.Text);
+                simulatesenddata = byteToHexStr(simulatesendbyte);
+                simulatesenddata = simulatesenddata.Replace(" ", "");
+            }
+
+            simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, simulatesenddata);
+            textBoxtxlen.Text = Convert.ToString(simulatesendstring.Length / 2);
         }
     }
 }

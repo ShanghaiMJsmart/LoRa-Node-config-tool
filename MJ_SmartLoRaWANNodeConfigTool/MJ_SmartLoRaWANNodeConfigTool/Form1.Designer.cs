@@ -66,6 +66,8 @@
             this.devaddress = new System.Windows.Forms.Label();
             this.netid = new System.Windows.Forms.Label();
             this.simulatecomunication = new System.Windows.Forms.GroupBox();
+            this.labeltxlen = new System.Windows.Forms.Label();
+            this.textBoxtxlen = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.texboxport = new System.Windows.Forms.TextBox();
             this.texboxreceivecnt = new System.Windows.Forms.TextBox();
@@ -182,7 +184,7 @@
             this.connect.Name = "connect";
             this.connect.Size = new System.Drawing.Size(124, 23);
             this.connect.TabIndex = 1;
-            this.connect.Text = "刷新连接";
+            this.connect.Text = "读取参数";
             this.connect.UseVisualStyleBackColor = true;
             this.connect.MouseClick += new System.Windows.Forms.MouseEventHandler(this.connect_MouseClick);
             // 
@@ -238,7 +240,7 @@
             this.texboxtimer.Name = "texboxtimer";
             this.texboxtimer.Size = new System.Drawing.Size(127, 21);
             this.texboxtimer.TabIndex = 9;
-            this.texboxtimer.Text = "3C";
+            this.texboxtimer.Text = "60";
             // 
             // label4
             // 
@@ -267,7 +269,7 @@
             this.endchannel.Name = "endchannel";
             this.endchannel.Size = new System.Drawing.Size(53, 12);
             this.endchannel.TabIndex = 4;
-            this.endchannel.Text = "结束信道";
+            this.endchannel.Text = "信道个数";
             // 
             // nodetype
             // 
@@ -493,6 +495,8 @@
             this.simulatecomunication.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.simulatecomunication.Controls.Add(this.labeltxlen);
+            this.simulatecomunication.Controls.Add(this.textBoxtxlen);
             this.simulatecomunication.Controls.Add(this.label7);
             this.simulatecomunication.Controls.Add(this.texboxport);
             this.simulatecomunication.Controls.Add(this.texboxreceivecnt);
@@ -507,16 +511,36 @@
             this.simulatecomunication.Controls.Add(this.senddata);
             this.simulatecomunication.Location = new System.Drawing.Point(408, 0);
             this.simulatecomunication.Name = "simulatecomunication";
-            this.simulatecomunication.Size = new System.Drawing.Size(608, 508);
+            this.simulatecomunication.Size = new System.Drawing.Size(406, 508);
             this.simulatecomunication.TabIndex = 4;
             this.simulatecomunication.TabStop = false;
             this.simulatecomunication.Text = "模拟通信";
+            // 
+            // labeltxlen
+            // 
+            this.labeltxlen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labeltxlen.AutoSize = true;
+            this.labeltxlen.Location = new System.Drawing.Point(318, 15);
+            this.labeltxlen.Name = "labeltxlen";
+            this.labeltxlen.Size = new System.Drawing.Size(29, 12);
+            this.labeltxlen.TabIndex = 13;
+            this.labeltxlen.Text = "长度";
+            // 
+            // textBoxtxlen
+            // 
+            this.textBoxtxlen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxtxlen.Enabled = false;
+            this.textBoxtxlen.Location = new System.Drawing.Point(353, 12);
+            this.textBoxtxlen.Name = "textBoxtxlen";
+            this.textBoxtxlen.Size = new System.Drawing.Size(39, 21);
+            this.textBoxtxlen.TabIndex = 12;
+            this.textBoxtxlen.Text = "5";
             // 
             // label7
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(520, 78);
+            this.label7.Location = new System.Drawing.Point(318, 84);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(29, 12);
             this.label7.TabIndex = 11;
@@ -525,17 +549,17 @@
             // texboxport
             // 
             this.texboxport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.texboxport.Location = new System.Drawing.Point(554, 75);
+            this.texboxport.Location = new System.Drawing.Point(353, 81);
             this.texboxport.Name = "texboxport";
             this.texboxport.Size = new System.Drawing.Size(40, 21);
             this.texboxport.TabIndex = 10;
-            this.texboxport.Text = "1";
+            this.texboxport.Text = "2";
             // 
             // texboxreceivecnt
             // 
             this.texboxreceivecnt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.texboxreceivecnt.Enabled = false;
-            this.texboxreceivecnt.Location = new System.Drawing.Point(488, 480);
+            this.texboxreceivecnt.Location = new System.Drawing.Point(286, 480);
             this.texboxreceivecnt.Name = "texboxreceivecnt";
             this.texboxreceivecnt.Size = new System.Drawing.Size(51, 21);
             this.texboxreceivecnt.TabIndex = 9;
@@ -544,7 +568,7 @@
             // 
             this.texboxsendcnt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.texboxsendcnt.Enabled = false;
-            this.texboxsendcnt.Location = new System.Drawing.Point(375, 480);
+            this.texboxsendcnt.Location = new System.Drawing.Point(173, 480);
             this.texboxsendcnt.Name = "texboxsendcnt";
             this.texboxsendcnt.Size = new System.Drawing.Size(56, 21);
             this.texboxsendcnt.TabIndex = 8;
@@ -552,7 +576,7 @@
             // clear
             // 
             this.clear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.clear.Location = new System.Drawing.Point(554, 478);
+            this.clear.Location = new System.Drawing.Point(352, 478);
             this.clear.Name = "clear";
             this.clear.Size = new System.Drawing.Size(43, 23);
             this.clear.TabIndex = 7;
@@ -564,7 +588,7 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(438, 483);
+            this.label6.Location = new System.Drawing.Point(236, 483);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 12);
             this.label6.TabIndex = 6;
@@ -574,7 +598,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(325, 483);
+            this.label5.Location = new System.Drawing.Point(123, 483);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 5;
@@ -587,7 +611,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richtexboxreceive.Location = new System.Drawing.Point(6, 133);
             this.richtexboxreceive.Name = "richtexboxreceive";
-            this.richtexboxreceive.Size = new System.Drawing.Size(591, 341);
+            this.richtexboxreceive.Size = new System.Drawing.Size(389, 341);
             this.richtexboxreceive.TabIndex = 4;
             this.richtexboxreceive.Text = "";
             this.richtexboxreceive.TextChanged += new System.EventHandler(this.richtexboxreceive_TextChanged);
@@ -598,15 +622,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richtexboxsend.Location = new System.Drawing.Point(6, 24);
             this.richtexboxsend.Name = "richtexboxsend";
-            this.richtexboxsend.Size = new System.Drawing.Size(499, 103);
+            this.richtexboxsend.Size = new System.Drawing.Size(297, 103);
             this.richtexboxsend.TabIndex = 3;
             this.richtexboxsend.Text = "hello";
+            this.richtexboxsend.TextChanged += new System.EventHandler(this.richtexboxsend_TextChanged);
             // 
             // checkboxhex
             // 
             this.checkboxhex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkboxhex.AutoSize = true;
-            this.checkboxhex.Location = new System.Drawing.Point(522, 24);
+            this.checkboxhex.Location = new System.Drawing.Point(320, 37);
             this.checkboxhex.Name = "checkboxhex";
             this.checkboxhex.Size = new System.Drawing.Size(72, 16);
             this.checkboxhex.TabIndex = 2;
@@ -618,7 +643,7 @@
             // 
             this.checkboxconfirm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkboxconfirm.AutoSize = true;
-            this.checkboxconfirm.Location = new System.Drawing.Point(522, 46);
+            this.checkboxconfirm.Location = new System.Drawing.Point(320, 59);
             this.checkboxconfirm.Name = "checkboxconfirm";
             this.checkboxconfirm.Size = new System.Drawing.Size(72, 16);
             this.checkboxconfirm.TabIndex = 1;
@@ -628,7 +653,7 @@
             // senddata
             // 
             this.senddata.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.senddata.Location = new System.Drawing.Point(522, 104);
+            this.senddata.Location = new System.Drawing.Point(320, 104);
             this.senddata.Name = "senddata";
             this.senddata.Size = new System.Drawing.Size(75, 23);
             this.senddata.TabIndex = 0;
@@ -644,7 +669,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1028, 520);
+            this.ClientSize = new System.Drawing.Size(826, 520);
             this.Controls.Add(this.simulatecomunication);
             this.Controls.Add(this.abpactivaty);
             this.Controls.Add(this.otaaactivaty);
@@ -719,6 +744,8 @@
         private System.Windows.Forms.Button buttonactivat;
         private System.Windows.Forms.ComboBox comboxactivatymethod;
         private System.Windows.Forms.ComboBox comboxnodetype;
+        private System.Windows.Forms.Label labeltxlen;
+        private System.Windows.Forms.TextBox textBoxtxlen;
     }
 }
 
