@@ -42,8 +42,6 @@
             this.comboxnodetype = new System.Windows.Forms.ComboBox();
             this.texboxtimer = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.texboxendchannel = new System.Windows.Forms.TextBox();
-            this.endchannel = new System.Windows.Forms.Label();
             this.nodetype = new System.Windows.Forms.Label();
             this.textBoxstartchannel = new System.Windows.Forms.TextBox();
             this.channelstart = new System.Windows.Forms.Label();
@@ -208,8 +206,6 @@
             this.GlobaleParameter.Controls.Add(this.comboxnodetype);
             this.GlobaleParameter.Controls.Add(this.texboxtimer);
             this.GlobaleParameter.Controls.Add(this.label4);
-            this.GlobaleParameter.Controls.Add(this.texboxendchannel);
-            this.GlobaleParameter.Controls.Add(this.endchannel);
             this.GlobaleParameter.Controls.Add(this.nodetype);
             this.GlobaleParameter.Controls.Add(this.textBoxstartchannel);
             this.GlobaleParameter.Controls.Add(this.channelstart);
@@ -251,26 +247,6 @@
             this.label4.TabIndex = 8;
             this.label4.Text = "唤醒周期";
             // 
-            // texboxendchannel
-            // 
-            this.texboxendchannel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.texboxendchannel.Location = new System.Drawing.Point(252, 39);
-            this.texboxendchannel.Name = "texboxendchannel";
-            this.texboxendchannel.Size = new System.Drawing.Size(127, 21);
-            this.texboxendchannel.TabIndex = 5;
-            this.texboxendchannel.Text = "04";
-            // 
-            // endchannel
-            // 
-            this.endchannel.AutoSize = true;
-            this.endchannel.Location = new System.Drawing.Point(193, 42);
-            this.endchannel.Name = "endchannel";
-            this.endchannel.Size = new System.Drawing.Size(53, 12);
-            this.endchannel.TabIndex = 4;
-            this.endchannel.Text = "信道个数";
-            // 
             // nodetype
             // 
             this.nodetype.AutoSize = true;
@@ -287,9 +263,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxstartchannel.Location = new System.Drawing.Point(65, 39);
             this.textBoxstartchannel.Name = "textBoxstartchannel";
-            this.textBoxstartchannel.Size = new System.Drawing.Size(122, 21);
+            this.textBoxstartchannel.Size = new System.Drawing.Size(221, 21);
             this.textBoxstartchannel.TabIndex = 2;
-            this.textBoxstartchannel.Text = "00";
+            this.textBoxstartchannel.Text = "07 00 00 00 00 00 00 00 00 00 00 00";
+            this.textBoxstartchannel.TextChanged += new System.EventHandler(this.textBoxstartchannel_TextChanged);
             // 
             // channelstart
             // 
@@ -298,7 +275,7 @@
             this.channelstart.Name = "channelstart";
             this.channelstart.Size = new System.Drawing.Size(53, 12);
             this.channelstart.TabIndex = 1;
-            this.channelstart.Text = "起始信道";
+            this.channelstart.Text = "信道掩码";
             // 
             // otaaactivaty
             // 
@@ -699,8 +676,6 @@
         private System.Windows.Forms.Button connect;
         private System.Windows.Forms.ComboBox serialportlist;
         private System.Windows.Forms.GroupBox GlobaleParameter;
-        private System.Windows.Forms.TextBox texboxendchannel;
-        private System.Windows.Forms.Label endchannel;
         private System.Windows.Forms.Label nodetype;
         private System.Windows.Forms.TextBox textBoxstartchannel;
         private System.Windows.Forms.Label channelstart;

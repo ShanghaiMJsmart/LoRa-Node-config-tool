@@ -336,13 +336,15 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                 //richtexboxreceive.Text += str.Length.ToString();
                 //richtexboxreceive.Text += "\r\n";
             }
-            if ((stringcnt == 5) && (sArray[0] == "OK") && (sArray[1].Length == 2) && (sArray[2].Length == 2) && (sArray[3].Length == 2) && (sArray[4].Length == 2))
+            if ((stringcnt == 4) && (sArray[0] == "OK") && (sArray[1].Length == (2 * 12)) && (sArray[2].Length == 2) && (sArray[3].Length == 2))
             {
                 this.BeginInvoke(new Action(() => {
-                textBoxstartchannel.Text = Convert.ToInt32(sArray[1], 16).ToString();
-                texboxendchannel.Text = Convert.ToInt32(sArray[2], 16).ToString();
+                textBoxstartchannel.Text = sArray[1];
+                    byte[] simulatesendbyte = null;
+                    simulatesendbyte = strToToHexByte(textBoxstartchannel.Text);
+                    textBoxstartchannel.Text = byteToHexStr(simulatesendbyte);
                 }));
-                switch (sArray[3])
+                switch (sArray[2])
                 {
                     case "00":
                         this.BeginInvoke(new Action(() => {
@@ -358,7 +360,7 @@ namespace MJ_SmartLoRaWANNodeConfigTool
                         break;
 
                 }
-                string activatymethod = sArray[4];
+                string activatymethod = sArray[3];
                 switch (activatymethod)
                 {
                     case "01":
@@ -435,14 +437,9 @@ namespace MJ_SmartLoRaWANNodeConfigTool
             //System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
             System.Threading.Thread.Sleep(400);
             simulatesendstring = "ATG=";
-            int intstartchannel = Convert.ToInt32(textBoxstartchannel.Text, 10);
-            string hexstartchannel = intstartchannel.ToString("X2");
-            simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, hexstartchannel);
-            simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, ",");
-
-            int intendchannel = Convert.ToInt32(texboxendchannel.Text, 10);
-            string hexendchannel = intendchannel.ToString("X2");
-            simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, hexendchannel);
+            //int intstartchannel = Convert.ToInt32(textBoxstartchannel.Text, 10);
+            //string hexstartchannel = intstartchannel.ToString("X2");
+            simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, textBoxstartchannel.Text.Replace(" ",""));
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, ",");
 
             string hexnodetype;
@@ -1004,6 +1001,17 @@ namespace MJ_SmartLoRaWANNodeConfigTool
 
             simulatesendstring = simulatesendstring.Insert(simulatesendstring.Length, simulatesenddata);
             textBoxtxlen.Text = Convert.ToString(simulatesendstring.Length / 2);
+        }
+
+        private void textBoxstartchannel_TextChanged(object sender, EventArgs e)
+        {
+            string simulatesenddata = null;
+
+            simulatesenddata = textBoxstartchannel.Text.Replace(" ", "");
+            if(simulatesenddata.Length / 2 != 12)
+            {
+                textBoxstartchannel.Text = "03 00 00 00 00 00 00 00 00 00 00 00";
+            }
         }
     }
 }
