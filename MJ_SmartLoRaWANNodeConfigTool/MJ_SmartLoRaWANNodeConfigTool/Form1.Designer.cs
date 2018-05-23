@@ -265,7 +265,7 @@
             this.textBoxstartchannel.Name = "textBoxstartchannel";
             this.textBoxstartchannel.Size = new System.Drawing.Size(221, 21);
             this.textBoxstartchannel.TabIndex = 2;
-            this.textBoxstartchannel.Text = "07 00 00 00 00 00 00 00 00 00 00 00";
+            this.textBoxstartchannel.Text = "41 10 00 00 00 00 00 00 00 00 00 00";
             this.textBoxstartchannel.TextChanged += new System.EventHandler(this.textBoxstartchannel_TextChanged);
             // 
             // channelstart
